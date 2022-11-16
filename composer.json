@@ -20,7 +20,7 @@
         "silverstripe/cms": "^4.0",
         "symbiote/silverstripe-gridfieldextensions": "^3.0",
         "symbiote/silverstripe-multivaluefield": "^5.0",
-        "unclecheese/betterbuttons": "2.x-dev"
+        "unclecheese/betterbuttons": "dev-feature/ss4-upgrade"
     },
     "suggest": {
         "unisolutions/silverstripe-copybutton": "Duplicate Blocks in Block Admin",
