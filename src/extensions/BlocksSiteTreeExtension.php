@@ -36,7 +36,7 @@ class BlocksSiteTreeExtension extends SiteTreeExtension
 		"DisabledBlocks" => Block::class,
 	];
 
-	public static $many_many_extraFields = [
+	private static $many_many_extraFields = [
 		'Blocks' => [
 			'Sort' => 'Int',
 			'BlockArea' => 'Varchar',
