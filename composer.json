@@ -10,8 +10,8 @@
     "homepage": "http://github.com/sheadawson/silverstripe-blocks",
     "authors": [
         {
-            "name": "Shea Dawson",
-            "email": "shea@silverstripe.com.au"
+            "name": "Pramesh Harshana",
+            "email": "prameshharshana@gmail.com"
         }
     ],
     "require": {
@@ -20,7 +20,7 @@
         "silverstripe/cms": "^4.0",
         "symbiote/silverstripe-gridfieldextensions": "^3.0",
         "symbiote/silverstripe-multivaluefield": "^5.0",
-        "unclecheese/betterbuttons": "dev-feature/ss4-upgrade"
+        "unclecheese/betterbuttons": "dev-feature/ss4-upgrade-vendor-module"
     },
     "suggest": {
         "unisolutions/silverstripe-copybutton": "Duplicate Blocks in Block Admin",
