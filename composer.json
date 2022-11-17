@@ -38,5 +38,11 @@
     	"psr-4": {
     		"SheaDawson\\Blocks\\": "src/"
     	}
-    }
+    },
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "git@github.com:Prameshharshana2/silverstripe-gridfield-betterbuttons.git"
+		}
+	]
 }
