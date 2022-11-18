@@ -18,6 +18,8 @@ use SheaDawson\Blocks\Model;
  */
 class BlockManager extends ViewableData
 {
+
+	private static $themes = array();
 	/**
 	 * Use default ContentBlock class.
 	 *
@@ -59,6 +61,35 @@ class BlockManager extends ViewableData
 	}
 
 	/**
+	 * Gets an array of all areas defined for the current theme.
+	 *
+	 * @param string $theme
+	 * @param bool   $keyAsValue
+	 *
+	 * @return array $areas
+	 **/
+	public function getAreasForTheme($theme = null, $keyAsValue = true)
+	{
+		$theme = $theme ? $theme : $this->getTheme();
+		if (!$theme) {
+			return false;
+		}
+		$config = $this->config()->get('themes');
+		if (!isset($config[$theme]['areas'])) {
+			return false;
+		}
+		$areas = $config[$theme]['areas'];
+		$areas = $keyAsValue ? ArrayLib::valuekey(array_keys($areas)) : $areas;
+		if (count($areas)) {
+			foreach ($areas as $k => $v) {
+				$areas[$k] = $keyAsValue ? FormField::name_to_label($k) : $v;
+			}
+		}
+
+		return $areas;
+	}
+
+	/**
 	 * Gets an array of all areas defined that are compatible with pages of type $class.
 	 *
 	 * @param string $class
@@ -67,7 +98,7 @@ class BlockManager extends ViewableData
 	 **/
 	public function getAreasForPageType($class)
 	{
-		$areas = $this->getAreas(false);
+		$areas = $this->getAreasForTheme(false);
 
 		if (!$areas) {
 			return false;
@@ -112,6 +143,22 @@ class BlockManager extends ViewableData
 		}
 	}
 
+	/*
+	 * Get the current/active theme or 'default' to support theme-less sites
+	 */
+	private function getTheme()
+	{
+		$currentTheme = Config::inst()->get(SSViewer::class, 'theme');
+
+		// check directly on SiteConfig incase ContentController hasn't set
+		// the theme yet in ContentController->init()
+		if (!$currentTheme && class_exists(SiteConfig::class)) {
+			$currentTheme = SiteConfig::current_site_config()->Theme;
+		}
+
+		return $currentTheme ? $currentTheme : 'default';
+	}
+
 	public function getBlockClasses()
 	{
 		$classes = ArrayLib::valuekey(ClassInfo::subclassesFor(Block::class));
@@ -120,17 +167,18 @@ class BlockManager extends ViewableData
 			$classes[$k] = singleton($k)->singular_name();
 		}
 
-		$config = $this->config()->get('options');
+//		$config = $this->config()->get('options');
+		$config = $this->getThemeConfig();
 
 		if (isset($config['use_default_blocks']) && !$config['use_default_blocks']) {
-	        unset($classes[Model\ContentBlock::class]);
-	    } else if (!$config['use_default_blocks']) {
-	        unset($classes[Model\ContentBlock::class]);
-	    }
+			unset($classes[Model\ContentBlock::class]);
+		} else if (!$config['use_default_blocks']) {
+			unset($classes[Model\ContentBlock::class]);
+		}
 
 		$disabledArr = Config::inst()->get(self::class, 'disabled_blocks') ? Config::inst()->get(self::class, 'disabled_blocks') : [];
 		if (isset($config['disabled_blocks'])) {
-		    $disabledArr = array_merge($disabledArr, $config['disabled_blocks']);
+			$disabledArr = array_merge($disabledArr, $config['disabled_blocks']);
 		}
 		if (count($disabledArr)) {
 			foreach ($disabledArr as $k => $v) {
@@ -146,8 +194,8 @@ class BlockManager extends ViewableData
 	 */
 	public function getUseBlockSets()
 	{
-		$config = $this->config()->get('options');
-
+//		$config = $this->config()->get('options');
+		$config = $this->getThemeConfig();
 		return isset($config['use_blocksets']) ? $config['use_blocksets'] : true;
 	}
 
@@ -156,8 +204,8 @@ class BlockManager extends ViewableData
 	 */
 	public function getExcludeFromPageTypes()
 	{
-		$config = $this->config()->get('options');
-
+//		$config = $this->config()->get('options');
+		$config = $this->getThemeConfig();
 		return isset($config['exclude_from_page_types']) ? $config['exclude_from_page_types'] : [];
 	}
 
@@ -166,7 +214,8 @@ class BlockManager extends ViewableData
 	 */
 	public function getWhiteListedPageTypes()
 	{
-		$config = $this->config()->get('options');
+//		$config = $this->config()->get('options');
+		$config = $this->getThemeConfig();
 		return isset($config['pagetype_whitelist']) ? $config['pagetype_whitelist'] : [];
 	}
 
@@ -176,7 +225,8 @@ class BlockManager extends ViewableData
 	 */
 	public function getBlackListedPageTypes()
 	{
-		$config = $this->config()->get('options');
+//		$config = $this->config()->get('options');
+		$config = $this->getThemeConfig();
 		$legacy = isset($config['exclude_from_page_types']) ? $config['exclude_from_page_types'] : [];
 		$current = isset($config['pagetype_blacklist']) ? $config['pagetype_blacklist'] : [];
 		return array_merge($legacy, $current);
@@ -187,8 +237,8 @@ class BlockManager extends ViewableData
 	 */
 	public function getUseExtraCSSClasses()
 	{
-		$config = $this->config()->get('options');
-
+//		$config = $this->config()->get('options');
+		$config = $this->getThemeConfig();
 		return isset($config['use_extra_css_classes']) ? $config['use_extra_css_classes'] : false;
 	}
 
@@ -197,8 +247,8 @@ class BlockManager extends ViewableData
 	 */
 	public function getPrefixDefaultCSSClasses()
 	{
-		$config = $this->config()->get('options');
-
+//		$config = $this->config()->get('options');
+		$config = $this->getThemeConfig();
 		return isset($config['prefix_default_css_classes']) ? $config['prefix_default_css_classes'] : false;
 	}
 }
