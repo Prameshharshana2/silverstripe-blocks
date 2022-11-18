@@ -183,8 +183,6 @@ class BlockManager extends ViewableData
 
 		if (isset($config['use_default_blocks']) && !$config['use_default_blocks']) {
 			unset($classes[Model\ContentBlock::class]);
-		} else if (!$config['use_default_blocks']) {
-			unset($classes[Model\ContentBlock::class]);
 		}
 
 		$disabledArr = Config::inst()->get(self::class, 'disabled_blocks') ? Config::inst()->get(self::class, 'disabled_blocks') : [];
