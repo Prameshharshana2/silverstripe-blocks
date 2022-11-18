@@ -290,7 +290,7 @@ class Block extends DataObject implements PermissionProvider
     public function canView($member = null)
     {
         if (!$member || !(is_a($member, Member::class)) || is_numeric($member)) {
-            $member = Security::getCurrentUser()->ID;
+            $member = Security::getCurrentUser();
         }
 
         // admin override
