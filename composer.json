@@ -19,8 +19,7 @@
         "silverstripe/framework": "^4.0",
         "silverstripe/cms": "^4.0",
         "symbiote/silverstripe-gridfieldextensions": "^3.0",
-        "symbiote/silverstripe-multivaluefield": "^5.0",
-        "unclecheese/betterbuttons": "dev-feature/ss4-upgrade-vendor-module"
+        "symbiote/silverstripe-multivaluefield": "^5.0"
     },
     "suggest": {
         "unisolutions/silverstripe-copybutton": "Duplicate Blocks in Block Admin",
@@ -38,11 +37,5 @@
     	"psr-4": {
     		"SheaDawson\\Blocks\\": "src/"
     	}
-    },
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "git@github.com:Prameshharshana2/silverstripe-gridfield-betterbuttons.git"
-		}
-	]
+    }
 }
