@@ -144,6 +144,17 @@ class BlockManager extends ViewableData
 	}
 
 	/*
+	 * Get the block config for the current theme
+	 */
+	private function getThemeConfig()
+	{
+		$theme = $this->getTheme();
+		$config = $this->config()->get('themes');
+
+		return $theme && isset($config[$theme]) ? $config[$theme] : null;
+	}
+
+	/*
 	 * Get the current/active theme or 'default' to support theme-less sites
 	 */
 	private function getTheme()
