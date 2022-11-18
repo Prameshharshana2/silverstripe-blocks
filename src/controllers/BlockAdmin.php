@@ -7,6 +7,7 @@ use SheaDawson\Blocks\Model\BlockSet;
 use SheaDawson\Blocks\Forms\GridFieldConfigBlockManager;
 use SilverStripe\Admin\ModelAdmin;
 use SilverStripe\Versioned\Versioned;
+use SilverStripe\Forms\GridField\GridFieldDataColumns;
 
 /**
  * BlockAdmin.
@@ -17,7 +18,7 @@ class BlockAdmin extends ModelAdmin
 {
     private static $managed_models = [
         Block::class,
-        Blockset::class,
+        BlockSet::class,
     ];
 
     private static $url_segment = "block-admin";
@@ -58,7 +59,7 @@ class BlockAdmin extends ModelAdmin
         if ($blockGridField = $form->Fields()->fieldByName('Block')) {
             $blockGridField->setConfig(GridFieldConfigBlockManager::create(true, true, false));
             $config = $blockGridField->getConfig();
-            $dcols = $config->getComponentByType('GridFieldDataColumns');
+            $dcols = $config->getComponentByType(GridFieldDataColumns::class);
             $dfields = $dcols->getDisplayFields($blockGridField);
             unset($dfields['BlockArea']);
             $dcols->setDisplayFields($dfields);

@@ -1,0 +1,16 @@
+---
+Name: bloglegacy
+---
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    Block: SheaDawson\Blocks\Model\Block
+    BlockManager: SheaDawson\Blocks\BlockManager
+    BlockUpgradeTask: SheaDawson\Blocks\Tasks\BlockUpgradeTask
+    ContentBlock: SheaDawson\Blocks\Model\ContentBlock
+    BlockSet: SheaDawson\Blocks\Model\BlockSet
+    GridFieldConfig_BlockManager: SheaDawson\Blocks\Forms\GridFieldConfigBlockManager
+    BlockAdmin: SheaDawson\Blocks\Controllers\BlockAdmin
+    Block_Controller: SheaDawson\Blocks\Controllers\BlockController
+    BlocksSiteTreeExtension: SheaDawson\Blocks\Extensions\BlocksSiteTreeExtension
+    BlockSiteConfigExtension: SheaDawson\Blocks\Extensions\BlockSiteConfigExtension
+    BlocksContentControllerExtension: SheaDawson\Blocks\Extensions\BlocksContentControllerExtension

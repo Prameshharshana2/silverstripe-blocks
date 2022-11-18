@@ -2,6 +2,8 @@
 
 namespace SheaDawson\Blocks\Forms;
 
+use SheaDawson\Blocks\BlockManager;
+use SheaDawson\Blocks\Controllers\BlockAdmin;
 use SheaDawson\Blocks\Model\Block;
 use SheaDawson\Blocks\Model\BlockSet;
 use SilverStripe\Control\Controller;
@@ -20,6 +22,7 @@ use SilverStripe\Forms\GridField\GridFieldDeleteAction;
 use Symbiote\GridFieldExtensions\GridFieldAddNewMultiClass;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 use Symbiote\GridFieldExtensions\GridFieldEditableColumns;
+use SilverStripe\CMS\Controllers\CMSPageEditController;
 
 /**
  * GridFieldConfig_BlockManager
@@ -35,10 +38,10 @@ class GridFieldConfigBlockManager extends GridFieldConfig
     {
         parent::__construct();
 
-        $this->blockManager = Injector::inst()->get('SheaDawson\\Blocks\\BlockManager');
+        $this->blockManager = Injector::inst()->get(BlockManager::class);
         $controllerClass = Controller::curr()->class;
         // Get available Areas (for page) or all in case of ModelAdmin
-        if ($controllerClass == 'CMSPageEditController') {
+        if ($controllerClass == CMSPageEditController::class) {
             $currentPage = Controller::curr()->currentPage();
             $areasFieldSource = $this->blockManager->getAreasForPageType($currentPage->ClassName);
         } else {
@@ -95,7 +98,7 @@ class GridFieldConfigBlockManager extends GridFieldConfig
         $this->addComponent($sort = new GridFieldSortableHeader());
         $this->addComponent($filter = new GridFieldFilterHeader());
         $this->addComponent(new GridFieldDetailForm());
-        if ($controllerClass == 'BlockAdmin' && class_exists('GridFieldCopyButton')) {
+        if ($controllerClass == BlockAdmin::class && class_exists(GridFieldCopyButton::class)) {
             $this->addComponent(new GridFieldCopyButton());
         }
 
@@ -145,8 +148,8 @@ class GridFieldConfigBlockManager extends GridFieldConfig
      **/
     public function addBulkEditing()
     {
-        if (class_exists('GridFieldBulkManager')) {
-            $this->addComponent(new GridFieldBulkManager());
+        if (class_exists('Colymba\\BulkManager\\BulkManager')) {
+            $this->addComponent(new BulkManager());
         }
 
         return $this;

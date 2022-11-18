@@ -9,6 +9,7 @@ use SilverStripe\Core\ClassInfo;
 use SilverStripe\Forms\FormField;
 use SilverStripe\View\SSViewer;
 use SilverStripe\View\ViewableData;
+use SheaDawson\Blocks\Model;
 
 /**
  * BlockManager.
@@ -113,7 +114,7 @@ class BlockManager extends ViewableData
 
 	public function getBlockClasses()
 	{
-		$classes = ArrayLib::valuekey(ClassInfo::subclassesFor("SheaDawson\Blocks\model\Block"));
+		$classes = ArrayLib::valuekey(ClassInfo::subclassesFor(Block::class));
 		array_shift($classes);
 		foreach ($classes as $k => $v) {
 			$classes[$k] = singleton($k)->singular_name();
@@ -122,12 +123,12 @@ class BlockManager extends ViewableData
 		$config = $this->config()->get('options');
 
 		if (isset($config['use_default_blocks']) && !$config['use_default_blocks']) {
-	        unset($classes['ContentBlock']);
+	        unset($classes[Model\ContentBlock::class]);
 	    } else if (!$config['use_default_blocks']) {
-	        unset($classes['ContentBlock']);
+	        unset($classes[Model\ContentBlock::class]);
 	    }
 
-		$disabledArr = Config::inst()->get("BlockManager", 'disabled_blocks') ? Config::inst()->get("BlockManager", 'disabled_blocks') : [];
+		$disabledArr = Config::inst()->get(self::class, 'disabled_blocks') ? Config::inst()->get(self::class, 'disabled_blocks') : [];
 		if (isset($config['disabled_blocks'])) {
 		    $disabledArr = array_merge($disabledArr, $config['disabled_blocks']);
 		}

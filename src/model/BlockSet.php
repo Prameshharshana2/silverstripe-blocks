@@ -19,6 +19,9 @@ use SilverStripe\Forms\GridField\GridFieldDeleteAction;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 use Symbiote\MultiValueField\Fields\MultiValueCheckboxField;
 use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
+use SilverStripe\CMS\Model\VirtualPage;
+use SilverStripe\ErrorPage\ErrorPage;
+use SilverStripe\CMS\Model\RedirectorPage;
 
 /**
  * BlockSet.
@@ -112,9 +115,9 @@ class BlockSet extends DataObject implements PermissionProvider
     {
         $pageTypes = [];
         $classes = ArrayLib::valueKey(SiteTree::page_type_classes());
-        unset($classes['VirtualPage']);
-        unset($classes['ErrorPage']);
-        unset($classes['RedirectorPage']);
+        unset($classes[VirtualPage::class]);
+        unset($classes[ErrorPage::class]);
+        unset($classes[RedirectorPage::class]);
         foreach ($classes as $pageTypeClass) {
             $pageTypes[$pageTypeClass] = singleton($pageTypeClass)->i18n_singular_name();
         }

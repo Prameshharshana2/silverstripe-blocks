@@ -184,7 +184,7 @@ class BlocksSiteTreeExtension extends SiteTreeExtension
 		if (SSViewer::hasTemplate($template)) {
 			return $data->renderWith($template);
 		} else {
-			return $data->renderWith('BlockArea');
+			return $data->renderWith('Includes\\BlockArea');
 		}
 	}
 

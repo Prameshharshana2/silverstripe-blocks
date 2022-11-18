@@ -24,6 +24,7 @@ use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\ListboxField;
 use SilverStripe\Forms\Tab;
+use SilverStripe\CMS\Controllers\CMSPageEditController;
 
 /**
  * Block
@@ -143,7 +144,7 @@ class Block extends DataObject implements PermissionProvider
             // this line is a temporary patch until I can work out why this dependency isn't being
             // loaded in some cases...
             if (!$self->blockManager) {
-                $self->blockManager = singleton("SheaDawson\\Blocks\\BlockManager");
+                $self->blockManager = singleton(BlockManager::class);
             }
 
             // ClassNmae - block type/class field
@@ -151,7 +152,7 @@ class Block extends DataObject implements PermissionProvider
             $fields->addFieldToTab('Root.Main', DropdownField::create('ClassName', _t('Block.BlockType', 'Block Type'), $classes)->addExtraClass('block-type'), 'Title');
 
             // BlockArea - display areas field if on page edit controller
-            if (Controller::curr()->class == 'CMSPageEditController') {
+            if (Controller::curr()->class == CMSPageEditController::class) {
                 $currentPage = Controller::curr()->currentPage();
                 $areas = $self->blockManager->getAreasForPageType($currentPage->ClassName);
                 $fields->addFieldToTab(
@@ -288,7 +289,7 @@ class Block extends DataObject implements PermissionProvider
      */
     public function canView($member = null)
     {
-        if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
+        if (!$member || !(is_a($member, Member::class)) || is_numeric($member)) {
             $member = Security::getCurrentUser()->ID;
         }
 
