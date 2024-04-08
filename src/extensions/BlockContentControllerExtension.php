@@ -34,10 +34,8 @@ class BlocksContentControllerExtension extends Extension
         if ($id = $this->owner->getRequest()->param('ID')) {
             $blocks = $this->owner->data()->getBlockList(null, true, true, true);
             if ($block = $blocks->find('ID', $id)) {
-                return $block->getController();
+                return $block->getControllerName();
             }
         }
-
-        return $block->getController();
     }
 }

@@ -3,6 +3,7 @@
 namespace SheaDawson\Blocks\Model;
 
 use SheaDawson\Blocks\BlockManager;
+use SheaDawson\Blocks\Controllers\BlockController;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Security;
 use SilverStripe\Versioned\Versioned;
@@ -25,6 +26,7 @@ use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\ListboxField;
 use SilverStripe\Forms\Tab;
 use SilverStripe\CMS\Controllers\CMSPageEditController;
+use SilverStripe\Core\Config\Config;
 
 /**
  * Block
@@ -250,7 +252,7 @@ class Block extends DataObject implements PermissionProvider
             }
         }
 
-        return $this->renderWith($this->ClassName, $this->getController());
+        return $this->renderWith($this->ClassName, $this->getControllerName());
     }
 
     /**
@@ -488,24 +490,44 @@ class Block extends DataObject implements PermissionProvider
      *
      * @return BlockController
      */
-    public function getController()
+    public function getControllerName()
     {
-        if ($this->controller) {
-            return $this->controller;
+        if ($controller = Config::inst()->get(static::class, 'controller_name')) {
+            return $controller;
         }
-        foreach (array_reverse(ClassInfo::ancestry($this->class)) as $blockClass) {
-            $controllerClass = "{$blockClass}Controller";
-            if (class_exists($controllerClass)) {
+
+        $namespaceMap = Config::inst()->get(Block::class, 'namespace_mapping');
+
+        //default controller for Block objects
+        $controller = BlockController::class;
+
+        //go through the ancestry for this class looking for
+        $ancestry = ClassInfo::ancestry(static::class);
+        // loop over the array going from the deepest descendant (ie: the current class) to Block
+        while ($class = array_pop($ancestry)) {
+            //we don't need to go any deeper than the Block class
+            if ($class == Block::class) {
                 break;
             }
-        }
-        if (!class_exists($controllerClass)) {
-            throw new ValidationException("Could not find controller class for $this->classname");
+            // If we have a class of "{$ClassName}Controller" then we found our controller
+            if (class_exists($candidate = sprintf('%sController', $class))) {
+                return $candidate;
+            } elseif (is_array($namespaceMap)) {
+                foreach ($namespaceMap as $blockNamespace => $controllerNamespace) {
+                    if (strpos($class, $blockNamespace) !== 0) {
+                        continue;
+                    }
+                    $candidate = sprintf(
+                        '%sController',
+                        str_replace($blockNamespace, $controllerNamespace, $class)
+                    );
+                    if (class_exists($candidate)) {
+                        return $candidate;
+                    }
+                }
+            }
         }
 
-        $this->controller = Injector::inst()->create($controllerClass, $this);
-        $this->controller->init();
-
-        return $this->controller;
+        return $controller;
     }
 }
