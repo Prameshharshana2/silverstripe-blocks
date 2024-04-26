@@ -17,7 +17,7 @@ class BlocksContentControllerExtension extends Extension
     public function onAfterInit()
     {
         if ($this->owner->data()->canEdit() && $this->owner->getRequest()->getVar('block_preview') == 1) {
-            Requirements::javascript(THIRDPARTY_DIR.'/jquery/jquery.js');
+            Requirements::javascript('https://code.jquery.com/jquery-3.7.1.min.js');
             Requirements::javascript(BLOCKS_DIR.'/javascript/block-preview.js');
             Requirements::css(BLOCKS_DIR.'/css/block-preview.css');
         }
