@@ -39,7 +39,7 @@ class GridFieldConfigBlockManager extends GridFieldConfig
         parent::__construct();
 
         $this->blockManager = Injector::inst()->get(BlockManager::class);
-        $controllerClass = Controller::curr()->class;
+        $controllerClass = get_class(Controller::curr());
         // Get available Areas (for page) or all in case of ModelAdmin
         if ($controllerClass == CMSPageEditController::class) {
             $currentPage = Controller::curr()->currentPage();
@@ -98,9 +98,6 @@ class GridFieldConfigBlockManager extends GridFieldConfig
         $this->addComponent($sort = new GridFieldSortableHeader());
         $this->addComponent($filter = new GridFieldFilterHeader());
         $this->addComponent(new GridFieldDetailForm());
-        if ($controllerClass == BlockAdmin::class && class_exists(GridFieldCopyButton::class)) {
-            $this->addComponent(new GridFieldCopyButton());
-        }
 
         $filter->setThrowExceptionOnBadDataType(false);
         $sort->setThrowExceptionOnBadDataType(false);
@@ -137,20 +134,6 @@ class GridFieldConfigBlockManager extends GridFieldConfig
         $add->setSearchList(Block::get()->filter(array(
             'ClassName' => array_keys($classes),
         )));
-
-        return $this;
-    }
-
-    /**
-     * Add the GridFieldBulkManager component to this grid config.
-     *
-     * @return $this
-     **/
-    public function addBulkEditing()
-    {
-        if (class_exists('Colymba\\BulkManager\\BulkManager')) {
-            $this->addComponent(new BulkManager());
-        }
 
         return $this;
     }

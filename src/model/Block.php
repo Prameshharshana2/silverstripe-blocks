@@ -9,10 +9,8 @@ use SilverStripe\Security\Security;
 use SilverStripe\Versioned\Versioned;
 use SilverStripe\ORM\FieldType\DBBoolean;
 use SilverStripe\ORM\FieldType\DBHTMLText;
-use SilverStripe\ORM\ValidationException;
 use SilverStripe\ORM\DB;
 use SilverStripe\Core\ClassInfo;
-use SilverStripe\Core\Injector\Injector;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\View\Requirements;
 use SilverStripe\View\SSViewer;
@@ -448,9 +446,9 @@ class Block extends DataObject implements PermissionProvider
     {
         $obj = DBHTMLText::create();
         if ($this->isPublished()) {
-            $obj->setValue('<img src="' . FRAMEWORK_ADMIN_DIR . '/images/alert-good.gif" />');
+            $obj->setValue('Published');
         } else {
-            $obj->setValue('<img src="' . FRAMEWORK_ADMIN_DIR . '/images/alert-bad.gif" />');
+            $obj->setValue('Draft');
         }
         return $obj;
     }

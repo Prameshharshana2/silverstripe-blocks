@@ -9,7 +9,8 @@ use SilverStripe\Core\ClassInfo;
 use SilverStripe\Forms\FormField;
 use SilverStripe\View\SSViewer;
 use SilverStripe\View\ViewableData;
-use SheaDawson\Blocks\Model;
+use SheaDawson\Blocks\Model\ContentBlock;
+use SheaDawson\Blocks\Model\Block;
 
 /**
  * BlockManager.
@@ -182,7 +183,7 @@ class BlockManager extends ViewableData
 		$config = $this->getThemeConfig();
 
 		if (isset($config['use_default_blocks']) && !$config['use_default_blocks']) {
-			unset($classes[Model\ContentBlock::class]);
+			unset($classes[ContentBlock::class]);
 		}
 
 		$disabledArr = Config::inst()->get(self::class, 'disabled_blocks') ? Config::inst()->get(self::class, 'disabled_blocks') : [];
