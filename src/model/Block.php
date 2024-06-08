@@ -139,7 +139,7 @@ class Block extends DataObject implements PermissionProvider
         $self = $this;
         $this->beforeUpdateCMSFields(function($fields) use($self) {
             /** @var FieldList $fields */
-            Requirements::add_i18n_javascript(BLOCKS_DIR . '/javascript/lang');
+            Requirements::add_i18n_javascript('sheadawson/silverstripe-blocks: javascript/lang');
 
             // this line is a temporary patch until I can work out why this dependency isn't being
             // loaded in some cases...

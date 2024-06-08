@@ -31,7 +31,11 @@
         "installer-name": "blocks",
         "branch-alias": {
             "dev-master": "dev-feature/ss4-upgrade"
-        }
+        },
+        "expose": [
+            "css",
+            "javascript"
+        ]
     },
     "autoload": {
     	"psr-4": {

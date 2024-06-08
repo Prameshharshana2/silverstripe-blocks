@@ -57,7 +57,7 @@ class BlockSet extends DataObject implements PermissionProvider
      **/
     private static $many_many_extraFields = [
         'Blocks' => [
-            'Sort' => 'Int',
+            'BlockSort' => 'Int',
             'BlockArea' => 'Varchar',
             'AboveOrBelow' => 'Varchar',
         ],
@@ -95,10 +95,10 @@ class BlockSet extends DataObject implements PermissionProvider
         * @todo - change relation editor back to the custom block manager config and fix issues when 'creating' Blocks from a BlockSet.
 		*/
         $gridConfig = GridFieldConfig_RelationEditor::create();
-        $gridConfig->addComponent(new GridFieldOrderableRows('Sort'));
+        $gridConfig->addComponent(new GridFieldOrderableRows('BlockSort'));
         $gridConfig->addComponent(new GridFieldDeleteAction());
 
-        $gridSource = $this->Blocks()->Sort('Sort');
+        $gridSource = $this->Blocks()->Sort('BlockSort');
 
         $fields->addFieldToTab('Root.Blocks', HeaderField::create('BlocksHeading', _t('Block.PLURALNAME', 'Blocks')));
         $fields->addFieldToTab('Root.Blocks', GridField::create('Blocks', _t('Block.PLURALNAME', 'Blocks'), $gridSource, $gridConfig));

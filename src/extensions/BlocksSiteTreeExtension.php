@@ -18,7 +18,7 @@ use SilverStripe\View\SSViewer;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\Security\Permission;
 use SilverStripe\Control\Controller;
-use SilverStripeAustralia\GridFieldExtensions\GridFieldOrderableRows;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 /**
  * BlocksSiteTreeExtension.
@@ -38,7 +38,7 @@ class BlocksSiteTreeExtension extends SiteTreeExtension
 
 	private static $many_many_extraFields = [
 		'Blocks' => [
-			'Sort' => 'Int',
+			'BlockSort' => 'Int',
 			'BlockArea' => 'Varchar',
 		],
 	];
@@ -100,21 +100,12 @@ class BlocksSiteTreeExtension extends SiteTreeExtension
 			// Blocks related directly to this Page
 			$gridConfig = GridFieldConfigBlockManager::create(true, true, true, true)
 				->addExisting($this->owner->class)
-				//->addBulkEditing()
-				// ->addComponent(new GridFieldOrderableRows()) // Comment until below TODO is complete.
-				;
+				->addComponent(new GridFieldOrderableRows('BlockSort'));
 
 
-			// TODO it seems this sort is not being applied...
 			$gridSource = $this->owner->Blocks();
-				// ->sort(array(
-				// 	"FIELD(SiteTree_Blocks.BlockArea, '" . implode("','", array_keys($areas)) . "')" => '',
-				// 	'SiteTree_Blocks.Sort' => 'ASC',
-				// 	'Name' => 'ASC'
-				// ));
 
 			$fields->addFieldToTab('Root.Blocks', GridField::create('Blocks', _t('Block.PLURALNAME', 'Blocks'), $gridSource, $gridConfig));
-
 
 			// Blocks inherited from BlockSets
 			if ($this->blockManager->getUseBlockSets()) {
@@ -220,7 +211,7 @@ class BlocksSiteTreeExtension extends SiteTreeExtension
 		$blocks = ArrayList::create();
 
 		// get blocks directly linked to this page
-		$nativeBlocks = $this->owner->Blocks()->sort('Sort');
+		$nativeBlocks = $this->owner->Blocks()->sort('BlockSort');
 		if ($area) {
 			$nativeBlocks = $nativeBlocks->filter('BlockArea', $area);
 		}
@@ -307,7 +298,7 @@ class BlocksSiteTreeExtension extends SiteTreeExtension
 		}
 
 		foreach ($sets as $set) {
-			$setBlocks = $set->Blocks()->sort('Sort DESC');
+			$setBlocks = $set->Blocks()->sort('BlockSort DESC');
 
 			if (!$includeDisabled) {
 				$setBlocks = $setBlocks->exclude('ID', $this->owner->DisabledBlocks()->column('ID'));
