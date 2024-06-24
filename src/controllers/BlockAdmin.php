@@ -25,6 +25,8 @@ class BlockAdmin extends ModelAdmin
 
     private static $menu_title = "Blocks";
 
+    private static $menu_icon = 'sheadawson/silverstripe-blocks: images/blocks.png';
+
     public $showImportForm = false;
 
     private static $dependencies = [

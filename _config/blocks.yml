@@ -12,6 +12,9 @@ SilverStripe\CMS\Controllers\ContentController:
 SilverStripe\CMS\Controllers\SiteConfig:
   extensions:
     - SheaDawson\Blocks\Extensions\BlockSiteConfigExtension
+SilverStripe\Admin\LeftAndMain:
+  extra_requirements_javascript:
+    - 'sheadawson/silverstripe-blocks: javascript/blocks-cms.js'
 SheaDawson\Blocks\Model\Block:
   extensions:
     - SilverStripe\Versioned\Versioned('Stage','Live')

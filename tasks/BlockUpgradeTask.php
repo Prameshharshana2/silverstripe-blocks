@@ -38,7 +38,7 @@ class BlockUpgradeTask extends BuildTask
 		DB::query('
 			update SiteTree_Blocks
 			left join Block on SiteTree_Blocks.BlockID = Block.ID
-			set Sort = Block.Weight
+			set BlockSort = Block.Weight
 			where BlockID = Block.ID
 		');
 
@@ -58,7 +58,7 @@ class BlockUpgradeTask extends BuildTask
 			foreach ($sc->Blocks() as $block) {
 				if (!$set->Blocks()->find('ID', $block->ID)) {
 					$set->Blocks()->add($block, [
-						'Sort' => $block->Weight,
+						'BlockSort' => $block->Weight,
 						'BlockArea' => $block->Area,
 					]);
 					echo "Block #$block->ID added to Global block set<br />";

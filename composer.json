@@ -16,10 +16,10 @@
     ],
     "require": {
         "composer/installers": "*",
-        "silverstripe/framework": "^4.0",
-        "silverstripe/cms": "^4.0",
-        "symbiote/silverstripe-gridfieldextensions": "^3.0",
-        "symbiote/silverstripe-multivaluefield": "^5.0"
+        "silverstripe/framework": "^4.0 | ^5.0",
+        "silverstripe/cms": "^4.0 | ^5.0",
+        "symbiote/silverstripe-gridfieldextensions": "^3.0 | ^4.0",
+        "symbiote/silverstripe-multivaluefield": "^5.0 | ^6.0"
     },
     "suggest": {
         "unisolutions/silverstripe-copybutton": "Duplicate Blocks in Block Admin",
@@ -31,7 +31,12 @@
         "installer-name": "blocks",
         "branch-alias": {
             "dev-master": "dev-feature/ss4-upgrade"
-        }
+        },
+        "expose": [
+            "css",
+            "images",
+            "javascript"
+        ]
     },
     "autoload": {
     	"psr-4": {
